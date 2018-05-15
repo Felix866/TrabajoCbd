@@ -56,7 +56,15 @@ public class Queries_restaurant {
 	public DBCursor findByCity(String ciudad) throws UnknownHostException{
 		DBCollection collection = DatabaseService.getCollection("Restaurantes");
 		DBObject query = new BasicDBObject("address line 2",java.util.regex.Pattern.compile(ciudad));
-		DBCursor result = collection.find(query);
+		DBObject projection = new BasicDBObject("_id", 0);
+		projection.put("address", 0);
+		projection.put("URL", 0);
+		projection.put("address line 2", 0);
+		projection.put("outcode", 0);
+		projection.put("postcode", 0);
+		projection.put("rating", 0);
+		projection.put("type_of_food", 0);
+		DBCursor result = collection.find(query, projection);
 		return result;
 	}
 	
