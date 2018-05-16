@@ -68,10 +68,15 @@ public class Queries_restaurant {
 //		System.out.println(aux2.count());
 //		DBCursor res = qr.findByTypeFood("Thai");
 //		System.out.println(res.count());
-		DBCursor res = qr.findByCity("London");
+		DBCursor aux = qr.findByCity("London");
+		DBCursor res = qr.findByRating(3.0);
+		DBObject a;
 		while(res.hasNext()) {
-			//System.out.println(res.next().toString());
-			System.out.println(res.next());
+			a =  res.next();
+			if(a.get("address line 2").equals("London")) {
+				System.out.println(a);
+			}
+			//System.out.println(res.next());
 		}
 	}
 }
