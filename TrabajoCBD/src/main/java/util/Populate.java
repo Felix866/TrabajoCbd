@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 public class Populate {
 
-	public static void populateConsumption() throws IOException{
+	public static void populateRestaurant() throws IOException{
 	
 		//Erase collection if any
 		DatabaseService dbs = new DatabaseService();
@@ -36,6 +36,6 @@ public class Populate {
 	
 	
 	public static void main(String[] args) throws IOException {
-		 Populate.populateConsumption();
+		 Populate.populateRestaurant();
 	}
 }
