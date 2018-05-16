@@ -339,7 +339,7 @@ public class Interface {
 		btnPopulate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					Populate.populateConsumption();
+					Populate.populateRestaurant();
 					 textPane.setText("Colecciones pobladas correctamente");
 				} catch (IOException e) {
 					e.printStackTrace();

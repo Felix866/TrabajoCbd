@@ -1,19 +1,14 @@
 package graphics;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -21,13 +16,11 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import util.MongoConnection;
 import util.Populate;
-import util.ToolKit;
-import javax.swing.JTextField;
 
 public class NewInterface {
 
@@ -80,7 +73,7 @@ public class NewInterface {
 			}
 		});
 		comboBox.setToolTipText("Tipo de gráfico que desea");
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Rating", "Tipo de comida", "Codigo postal"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Rating", "Tipo de comida"}));
 		graphicSelected = comboBox.getSelectedItem().toString();
 		comboBox.setBounds(100, 72, 385, 20);
 		frame.getContentPane().add(comboBox);
@@ -99,7 +92,7 @@ public class NewInterface {
 				minRating = Integer.valueOf(comboBox_1.getSelectedItem().toString());
 			}
 		});
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7"}));
+		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6"}));
 		minRating = Integer.valueOf(comboBox_1.getSelectedItem().toString());
 		comboBox_1.setBounds(100, 188, 50, 20);
 		frame.getContentPane().add(comboBox_1);
@@ -110,7 +103,7 @@ public class NewInterface {
 				maxRating = Integer.valueOf(comboBox_2.getSelectedItem().toString());
 			}
 		});
-		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"7", "6", "5", "4", "3", "2", "1"}));
+		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"6", "5", "4", "3", "2", "1"}));
 		maxRating = Integer.valueOf(comboBox_2.getSelectedItem().toString());
 		comboBox_2.setBounds(100, 216, 50, 20);
 		frame.getContentPane().add(comboBox_2);
@@ -260,12 +253,39 @@ public class NewInterface {
 		btnRunMongoServer.setBackground(Color.ORANGE);
 		btnRunMongoServer.setBounds(265, 11, 121, 37);
 		frame.getContentPane().add(btnRunMongoServer);
+		btnRunMongoServer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MongoConnection.runServer("C:\\\\Program Files\\\\MongoDB\\\\Server\\\\3.6\\\\bin\\\\mongod.exe");
+			}
+		});
 		
 		JButton btnGenerarGrfica = new JButton("Generar gráfica");
 		btnGenerarGrfica.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnGenerarGrfica.setBounds(174, 103, 135, 37);
 		frame.getContentPane().add(btnGenerarGrfica);
 		tipo_tipo = comboBox_3.getSelectedItem().toString();
-		
+		btnGenerarGrfica.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(graphicSelected.equals("Tipo de comida")) {
+					try {
+						if(!graficaBarras)
+							RestaurantGraph.generateRestaurantTypeFoodLineGraph("Gráfica", "Tipos de comida por restaurantes", "Tipos de comida", "Nº de restaurantes");
+						else
+							RestaurantGraph.generateRestaurantTypeFoodBarGraph("Gráfica", "Tipos de comida por restaurantes", "Tipos de comida", "Nº de restaurantes");
+					} catch (UnknownHostException e) {
+						e.printStackTrace();
+					}	
+				}else if(graphicSelected.equals("Rating")) {
+					try {
+						if(!graficaBarras)
+							RestaurantGraph.generateRestaurantRatioLineGraph("Gráfica", "Rating de restaurantes", "Rating", "Nº de restaurantes");
+						else
+							RestaurantGraph.generateRestaurantRatioBarGraph("Gráfica", "Rating de restaurantes", "Rating", "Nº de restaurantes");
+					} catch (UnknownHostException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
 	}
 }
