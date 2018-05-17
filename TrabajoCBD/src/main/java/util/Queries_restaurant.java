@@ -1,15 +1,11 @@
 package util;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-
-import forms.RestaurantForm;
 
 public class Queries_restaurant {
 	
@@ -31,6 +27,13 @@ public class Queries_restaurant {
 	public DBCursor findByTypeFood(String type) throws UnknownHostException{
 		DBCollection collection = DatabaseService.getCollection("Restaurantes");
 		DBObject query = new BasicDBObject("type_of_food",java.util.regex.Pattern.compile(type));
+		DBCursor result = collection.find(query);
+		return result;
+	}
+	//Devuelve todos los elementos por tipo de precio
+	public DBCursor findByPrecio(String precio) throws UnknownHostException{
+		DBCollection collection = DatabaseService.getCollection("Restaurantes");
+		DBObject query = new BasicDBObject("price",java.util.regex.Pattern.compile(precio));
 		DBCursor result = collection.find(query);
 		return result;
 	}
@@ -74,20 +77,24 @@ public class Queries_restaurant {
 //		DBCursor res = qr.findByTypeFood("Thai");
 //		System.out.println(res.count());
 //		DBCursor aux = qr.findByCity("London");
-		DBCursor res = qr.findAll();
-		DBCursor aux = qr.findAll();
-		DBObject a;
+//		DBCursor res = qr.findAll();
+//		DBCursor aux = qr.findAll();
+//		DBObject a;
+//		while(res.hasNext()) {
+//			a =  res.next();
+//			if(a.get("address line 2").equals("London")) {
+//				System.out.println(a);
+//				System.out.println(a.keySet());
+//			}
+//			//System.out.println(res.next());
+//		}
+//		List<RestaurantForm> lista = ToolKit.cursorToColletion(aux);
+//		for (int i = 0; i < lista.size()-1; i++) {
+//			System.out.println(lista.get(i).getAddress());
+//		}
+		DBCursor res = qr.findByCity("");
 		while(res.hasNext()) {
-			a =  res.next();
-			if(a.get("address line 2").equals("London")) {
-				System.out.println(a);
-				System.out.println(a.keySet());
-			}
-			//System.out.println(res.next());
-		}
-		List<RestaurantForm> lista = ToolKit.cursorToColletion(aux);
-		for (int i = 0; i < lista.size()-1; i++) {
-			System.out.println(lista.get(i).getAddress());
+			System.out.println(res.count());
 		}
 	}
 }

@@ -36,7 +36,7 @@ public class ToolKit {
 			rating = aux.get("rating").toString();
 			typefood = aux.get("type_of_food").toString();
 			price = aux.get("price").toString();
-			form = new RestaurantForm(id,address, address2, name, outcode, postcode ,Double.parseDouble(rating), typefood,Double.parseDouble(price));
+			form = new RestaurantForm(id,address, address2, name, outcode, postcode ,Double.parseDouble(rating), typefood,price);
 			res.add(form);
 		}
 		

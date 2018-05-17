@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -31,7 +33,8 @@ public class NewInterface {
 	public static boolean graficaBarras,usarFiltros,isChinese,isThai,isAmerican,isKebab,isCurry,isTurkish,isPizza,isBreakfast;
 	public static JTextPane textPane = new JTextPane();
 	private JTextField textField;
-
+	private List<String> comidas = new ArrayList<String>();
+	private String ciudad = "";
 	/**
 	 * Launch the application.
 	 */
@@ -125,7 +128,40 @@ public class NewInterface {
 		frmMongo.getContentPane().add(btnGenerarGrfica);
 		btnGenerarGrfica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(maxRating>=minRating) {
+				if(isChinese)
+					comidas.add("Chinese");
+				if(isThai)
+					comidas.add("Thai");
+				if(isKebab)
+					comidas.add("Kebab");
+				if(isCurry)
+					comidas.add("Curry");
+				if(isTurkish)
+					comidas.add("Turkish");
+				if(isPizza)
+					comidas.add("Pizza");
+				if(isBreakfast)
+					comidas.add("Breakfast");
+				if(usarFiltros) {
+					if(maxRating>=minRating) {
+						if(graphicSelected.equals("Tipo de comida")) {
+							try {
+								RestaurantGraph.generateRestaurantTypeFoodGraph("Gráfica", "Tipos de comida por restaurantes", "Tipos de comida", "Nº de restaurantes",graficaBarras);
+							} catch (UnknownHostException e) {
+								e.printStackTrace();
+							}	
+						}else if(graphicSelected.equals("Rating")) {
+							try {
+								RestaurantGraph.generateRestaurantRatioGraph("Gráfica", "Rating de restaurantes", "Rating", "Nº de restaurantes",minRating,maxRating, ciudad, price, comidas, graficaBarras);
+							} catch (UnknownHostException e) {
+								e.printStackTrace();
+							}
+						}
+					}else {
+						 textPane.setText("Rating maximo("+maxRating.toString()+") debe ser mayor o igual a Rating mínimo("+minRating.toString()+")");
+					}
+				}
+				else {
 					if(graphicSelected.equals("Tipo de comida")) {
 						try {
 							RestaurantGraph.generateRestaurantTypeFoodGraph("Gráfica", "Tipos de comida por restaurantes", "Tipos de comida", "Nº de restaurantes",graficaBarras);
@@ -134,13 +170,11 @@ public class NewInterface {
 						}	
 					}else if(graphicSelected.equals("Rating")) {
 						try {
-							RestaurantGraph.generateRestaurantRatioGraph("Gráfica", "Rating de restaurantes", "Rating", "Nº de restaurantes",minRating,maxRating, graficaBarras);
+							RestaurantGraph.generateRestaurantRatioGraph("Gráfica", "Rating de restaurantes", "Rating", "Nº de restaurantes",1.0, 6.0, "", "", comidas, graficaBarras);
 						} catch (UnknownHostException e) {
 							e.printStackTrace();
 						}
 					}
-				}else {
-					 textPane.setText("Rating maximo("+maxRating.toString()+") debe ser mayor o igual a Rating mínimo("+minRating.toString()+")");
 				}
 			}
 		});
@@ -275,7 +309,7 @@ public class NewInterface {
 				price = comboBox_price.getSelectedItem().toString();
 			}
 		});
-		comboBox_price.setModel(new DefaultComboBoxModel(new String[] {"Ninguno", "Bajo", "medio", "Alto"}));
+		comboBox_price.setModel(new DefaultComboBoxModel(new String[] {"low", "medium", "high"}));
 		
 		JLabel lblTipoDeComida = new JLabel("Tipos de comida");
 		lblTipoDeComida.setBounds(208, 215, 126, 14);
@@ -289,6 +323,7 @@ public class NewInterface {
 		JLabel lblCiudad = new JLabel("Ciudad");
 		lblCiudad.setBounds(21, 302, 63, 14);
 		frmMongo.getContentPane().add(lblCiudad);
+		
 		
 		JLabel lblFiltros = new JLabel("FILTROS");
 		lblFiltros.setFont(new Font("Tahoma", Font.PLAIN, 20));

@@ -1,6 +1,7 @@
 package graphics;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -11,23 +12,49 @@ import util.ToolKit;
 
 public class RestaurantGraph {
 	
-	public static void generateRestaurantRatioGraph(String windowName, String graphName, String xAxisName, String yAxisName, Double rangoInicio, Double rangoFin, boolean graficaBarras) throws UnknownHostException{
+	public static void generateRestaurantRatioGraph(String windowName, String graphName, String xAxisName, String yAxisName, Double rangoInicio, Double rangoFin, String ciudad, String precio, List<String> comida, boolean graficaBarras) throws UnknownHostException{
 		GraphUtil gu = new GraphUtil();
 		DefaultCategoryDataset data = new DefaultCategoryDataset();
 		Queries_restaurant cr = new Queries_restaurant();
-		List<RestaurantForm> restaurantes;
+		List<RestaurantForm> restaurantes = new ArrayList<RestaurantForm>();
 		List<RestaurantForm> restaurantes2;
-	
-		restaurantes = ToolKit.cursorToColletion(cr.findAll());
-		restaurantes2 = ToolKit.cursorToColletion(cr.findByRating(5.0));
-		
-		restaurantes.retainAll(restaurantes2);
+		List<RestaurantForm> restaurantes3;
+		List<RestaurantForm> restaurantes4 = new ArrayList<RestaurantForm>();
+		Integer count = 0;
 			
 		for(Double i = rangoInicio; i<=rangoFin; i=i+0.5) {
-			data.addValue(cr.findByRating(i).count(), "Nº de restaurantes", i.toString());
+			if(cr.findByRating(i).size() != 0) {
+				restaurantes.addAll(ToolKit.cursorToColletion(cr.findByRating(i)));
+			}	
 		}
+		restaurantes2 = ToolKit.cursorToColletion(cr.findByCity(ciudad));
+		restaurantes3 = ToolKit.cursorToColletion(cr.findByPrecio(precio));
 		
-		
+		restaurantes.retainAll(restaurantes2);
+		restaurantes2.retainAll(restaurantes3);
+		if(!comida.isEmpty()) {
+			for(int i = 0; i < comida.size(); i++) {
+				restaurantes4 = ToolKit.cursorToColletion(cr.findByTypeFood(comida.get(i)));
+			}
+			restaurantes3.retainAll(restaurantes4);
+			for(Double i = rangoInicio; i <= rangoFin; i=i+0.5) {
+				for(RestaurantForm aux:restaurantes4) {
+					if(aux.getRating() == i) {
+						count++;
+					}
+				}
+				data.addValue(count, "Nº de restaurantes", i.toString());
+			}
+		}else {
+			for(Double i = rangoInicio; i <= rangoFin; i=i+0.5) {
+				for(RestaurantForm aux:restaurantes3) {
+					if(aux.getRating() == i) {
+						count++;
+					}
+				}
+				data.addValue(count, "Nº de restaurantes", i.toString());
+			}
+		}
 		
 		if(graficaBarras) {
 			gu.createBarGraph(windowName, graphName, xAxisName, yAxisName, data);
@@ -68,7 +95,9 @@ public class RestaurantGraph {
 	
 	public static void main(String[] args) throws UnknownHostException {
 		//RestaurantGraph.generateRestaurantRatioLineGraph("Gráfica", "Rating de restaurantes", "Rating", "Nº de restaurantes");
-		//RestaurantGraph.generateRestaurantRatioBarGraph("Gráfica", "Rating de restaurantes", "Rating", "Nº de restaurantes", 1.0, 1.0);
+		List<String> comidas = new ArrayList<String>();
+		comidas.add("Pizza");
+		RestaurantGraph.generateRestaurantRatioGraph("Gráfica", "Rating de restaurantes", "Rating", "Nº de restaurantes", 1.0, 6.0, "London", "medium", comidas, true);
 		//RestaurantGraph.generateRestaurantTypeFoodLineGraph("Gráfica", "Tipos de comida por restaurantes", "Tipos de comida", "Nº de restaurantes");
 		//RestaurantGraph.generateRestaurantTypeFoodBarGraph("Gráfica", "Tipos de comida por restaurantes", "Tipos de comida", "Nº de restaurantes");
 	}
