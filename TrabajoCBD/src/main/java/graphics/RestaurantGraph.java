@@ -15,11 +15,13 @@ public class RestaurantGraph {
 		GraphUtil gu = new GraphUtil();
 		DefaultCategoryDataset data = new DefaultCategoryDataset();
 		Queries_restaurant cr = new Queries_restaurant();
-//		List<RestaurantForm> restaurantes;
-//	
-//		restaurantes = ToolKit.cursorToColletion(cr.findAll());
-//		
+		List<RestaurantForm> restaurantes;
+		List<RestaurantForm> restaurantes2;
+	
+		restaurantes = ToolKit.cursorToColletion(cr.findAll());
+		restaurantes2 = ToolKit.cursorToColletion(cr.findByRating(5.0));
 		
+		restaurantes.retainAll(restaurantes2);
 			
 		for(Double i = rangoInicio; i<=rangoFin; i=i+0.5) {
 			data.addValue(cr.findByRating(i).count(), "Nº de restaurantes", i.toString());
