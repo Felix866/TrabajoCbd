@@ -27,8 +27,8 @@ public class NewInterface {
 	private JFrame frmMongo;
 	
 	public static String graphicSelected,tipo_tipo;
-	public static Integer maxRating, minRating, anyoOpcional;
-	public static boolean graficaBarras,isAnyoOpcional,isGeneral,isPrimaria,isSecundaria1,isSecundaria2,isEducSuperior;
+	public static Double maxRating, minRating, anyoOpcional;
+	public static boolean graficaBarras,isAnyoOpcional,isGeneral,isPrimaria,isSecundaria1,isSecundaria2,isEducSuperior,usarFiltros;
 	public static JTextPane textPane = new JTextPane();
 	private JTextField textField;
 
@@ -127,19 +127,13 @@ public class NewInterface {
 			public void actionPerformed(ActionEvent arg0) {
 				if(graphicSelected.equals("Tipo de comida")) {
 					try {
-						if(!graficaBarras)
-							RestaurantGraph.generateRestaurantTypeFoodLineGraph("Gráfica", "Tipos de comida por restaurantes", "Tipos de comida", "Nº de restaurantes");
-						else
-							RestaurantGraph.generateRestaurantTypeFoodBarGraph("Gráfica", "Tipos de comida por restaurantes", "Tipos de comida", "Nº de restaurantes");
+						RestaurantGraph.generateRestaurantTypeFoodGraph("Gráfica", "Tipos de comida por restaurantes", "Tipos de comida", "Nº de restaurantes",graficaBarras);
 					} catch (UnknownHostException e) {
 						e.printStackTrace();
 					}	
 				}else if(graphicSelected.equals("Rating")) {
 					try {
-						if(!graficaBarras)
-							RestaurantGraph.generateRestaurantRatioLineGraph("Gráfica", "Rating de restaurantes", "Rating", "Nº de restaurantes");
-						else
-							RestaurantGraph.generateRestaurantRatioBarGraph("Gráfica", "Rating de restaurantes", "Rating", "Nº de restaurantes");
+						RestaurantGraph.generateRestaurantRatioGraph("Gráfica", "Rating de restaurantes", "Rating", "Nº de restaurantes",minRating,maxRating, graficaBarras);
 					} catch (UnknownHostException e) {
 						e.printStackTrace();
 					}
@@ -154,11 +148,11 @@ public class NewInterface {
 		final JComboBox comboBox_1 = new JComboBox();
 		comboBox_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				minRating = Integer.valueOf(comboBox_1.getSelectedItem().toString());
+				minRating = Double.valueOf(comboBox_1.getSelectedItem().toString());
 			}
 		});
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6"}));
-		minRating = Integer.valueOf(comboBox_1.getSelectedItem().toString());
+		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5", "5.5", "6"}));
+		minRating = Double.valueOf(comboBox_1.getSelectedItem().toString());
 		comboBox_1.setBounds(101, 212, 50, 20);
 		frmMongo.getContentPane().add(comboBox_1);
 		
@@ -169,22 +163,22 @@ public class NewInterface {
 		final JComboBox comboBox_2 = new JComboBox();
 		comboBox_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				maxRating = Integer.valueOf(comboBox_2.getSelectedItem().toString());
+				maxRating = Double.valueOf(comboBox_2.getSelectedItem().toString());
 			}
 		});
-		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"6", "5", "4", "3", "2", "1"}));
-		maxRating = Integer.valueOf(comboBox_2.getSelectedItem().toString());
+		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"6", "5.5", "5", "4.5", "4", "3.5", "3", "2.5", "2", "1.5", "1"}));
+		maxRating = Double.valueOf(comboBox_2.getSelectedItem().toString());
 		comboBox_2.setBounds(101, 240, 50, 20);
 		frmMongo.getContentPane().add(comboBox_2);
 		
-		final JCheckBox isFiltredUsed = new JCheckBox("Seleccione para activar los filtros");
-		isFiltredUsed.addActionListener(new ActionListener() {
+		final JCheckBox chckBox = new JCheckBox("Seleccione para activar los filtros");
+		chckBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				isAnyoOpcional = isFiltredUsed.isSelected();
+				usarFiltros = chckBox.isSelected();
 			}
 		});
-		isFiltredUsed.setBounds(183, 328, 230, 23);
-		frmMongo.getContentPane().add(isFiltredUsed);
+		chckBox.setBounds(183, 328, 230, 23);
+		frmMongo.getContentPane().add(chckBox);
 		
 		JPanel panel_tipo_de_comida = new JPanel();
 		FlowLayout fl_panel_tipo_de_comida = (FlowLayout) panel_tipo_de_comida.getLayout();
@@ -208,8 +202,6 @@ public class NewInterface {
 				isPrimaria = chckbxChinese.isSelected();
 			}
 		});
-		panel_tipo_de_comida.add(chckbxChinese);
-		isPrimaria = chckbxChinese.isSelected();
 		
 		final JCheckBox chckbxBreakfast = new JCheckBox("Breakfast");
 		chckbxBreakfast.addActionListener(new ActionListener() {
@@ -219,6 +211,8 @@ public class NewInterface {
 		});
 		panel_tipo_de_comida.add(chckbxBreakfast);
 		isSecundaria1 = chckbxBreakfast.isSelected();
+		panel_tipo_de_comida.add(chckbxChinese);
+		isPrimaria = chckbxChinese.isSelected();
 		
 		final JCheckBox chckbxAmerican = new JCheckBox("American");
 		chckbxAmerican.addActionListener(new ActionListener() {

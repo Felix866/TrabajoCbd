@@ -8,11 +8,39 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 
 import enumerados.LaboralRateType;
 import enumerados.LaboralType;
+import forms.RestaurantForm;
 
 public class ToolKit {
+	/*
+	 * Recoge un cursor y devuelve una lista de restaurantes
+	 */
+	public static List<RestaurantForm> cursorToColletion(DBCursor cursor){		
+		List<RestaurantForm> res = new ArrayList<RestaurantForm>();
+		DBObject aux = null;
+		RestaurantForm form = null;
+		String id,address,address2,name,outcode,postcode,rating,typefood;
+		
+		while(cursor.hasNext()) {
+			aux =  cursor.next();
+			id = aux.get("_id").toString();
+			address = aux.get("address").toString();
+			address2 =  aux.get("address line 2").toString();
+			name = aux.get("name").toString();
+			outcode = aux.get("outcode").toString();
+			postcode = aux.get("postcode").toString();
+			rating = aux.get("rating").toString();
+			typefood = aux.get("type_of_food").toString();
+			form = new RestaurantForm(id,address, address2, name, outcode, postcode ,Double.parseDouble(rating), typefood);
+			res.add(form);
+		}
+		
+		return res;	
+	}
 	
 	/*
 	 * Formatea una cadena devuelta por la BD. Elimina los caracteres

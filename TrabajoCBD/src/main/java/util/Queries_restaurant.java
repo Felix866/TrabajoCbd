@@ -1,11 +1,15 @@
 package util;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+
+import forms.RestaurantForm;
 
 public class Queries_restaurant {
 	
@@ -68,15 +72,21 @@ public class Queries_restaurant {
 //		System.out.println(aux2.count());
 //		DBCursor res = qr.findByTypeFood("Thai");
 //		System.out.println(res.count());
-		DBCursor aux = qr.findByCity("London");
-		DBCursor res = qr.findByRating(3.0);
+//		DBCursor aux = qr.findByCity("London");
+		DBCursor res = qr.findAll();
+		DBCursor aux = qr.findAll();
 		DBObject a;
 		while(res.hasNext()) {
 			a =  res.next();
 			if(a.get("address line 2").equals("London")) {
 				System.out.println(a);
+				System.out.println(a.keySet());
 			}
 			//System.out.println(res.next());
+		}
+		List<RestaurantForm> lista = ToolKit.cursorToColletion(aux);
+		for (int i = 0; i < lista.size()-1; i++) {
+			System.out.println(lista.get(i).getAddress());
 		}
 	}
 }

@@ -2,19 +2,21 @@ package forms;
 
 public class RestaurantForm {
 	
+	private String id;
 	private String address;
 	private String address2;
 	private String name;
 	private String outcode;
 	private String postcode;
-	private int rating;
+	private double rating;
 	private String type_food;
 	
 	public RestaurantForm() {
 		super();
 	}
 	
-	public RestaurantForm(String address, String address2, String name,	String outcode, String postcode, int rating, String type_food) {
+	public RestaurantForm(String id, String address, String address2, String name,String outcode, String postcode, double rating, String type_food) {
+		this.setId(id);
 		this.setAddress(address);
 		this.setAddress2(address2);
 		this.setName(name);
@@ -64,11 +66,11 @@ public class RestaurantForm {
 		this.postcode = postcode;
 	}
 
-	public int getRating() {
+	public double getRating() {
 		return rating;
 	}
 
-	public void setRating(int rating) {
+	public void setRating(double rating) {
 		this.rating = rating;
 	}
 
@@ -79,5 +81,14 @@ public class RestaurantForm {
 	public void setType_food(String type_food) {
 		this.type_food = type_food;
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 
 }
