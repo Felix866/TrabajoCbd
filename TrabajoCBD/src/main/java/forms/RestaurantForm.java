@@ -10,12 +10,13 @@ public class RestaurantForm {
 	private String postcode;
 	private double rating;
 	private String type_food;
+	private double price;
 	
 	public RestaurantForm() {
 		super();
 	}
 	
-	public RestaurantForm(String id, String address, String address2, String name,String outcode, String postcode, double rating, String type_food) {
+	public RestaurantForm(String id, String address, String address2, String name,String outcode, String postcode, double rating, String type_food,double price) {
 		this.setId(id);
 		this.setAddress(address);
 		this.setAddress2(address2);
@@ -24,6 +25,7 @@ public class RestaurantForm {
 		this.setPostcode(postcode);
 		this.setRating(rating);
 		this.setType_food(type_food);
+		this.setPrice(price);
 	}
 
 	public String getAddress() {
@@ -88,6 +90,14 @@ public class RestaurantForm {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 

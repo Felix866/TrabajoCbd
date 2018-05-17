@@ -23,7 +23,7 @@ public class ToolKit {
 		List<RestaurantForm> res = new ArrayList<RestaurantForm>();
 		DBObject aux = null;
 		RestaurantForm form = null;
-		String id,address,address2,name,outcode,postcode,rating,typefood;
+		String id,address,address2,name,outcode,postcode,rating,typefood,price;
 		
 		while(cursor.hasNext()) {
 			aux =  cursor.next();
@@ -35,7 +35,8 @@ public class ToolKit {
 			postcode = aux.get("postcode").toString();
 			rating = aux.get("rating").toString();
 			typefood = aux.get("type_of_food").toString();
-			form = new RestaurantForm(id,address, address2, name, outcode, postcode ,Double.parseDouble(rating), typefood);
+			price = aux.get("price").toString();
+			form = new RestaurantForm(id,address, address2, name, outcode, postcode ,Double.parseDouble(rating), typefood,Double.parseDouble(price));
 			res.add(form);
 		}
 		
