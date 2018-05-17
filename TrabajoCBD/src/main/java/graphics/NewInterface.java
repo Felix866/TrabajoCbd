@@ -26,9 +26,9 @@ public class NewInterface {
 
 	private JFrame frmMongo;
 	
-	public static String graphicSelected,tipo_tipo;
+	public static String graphicSelected,price;
 	public static Double maxRating, minRating, anyoOpcional;
-	public static boolean graficaBarras,isAnyoOpcional,isGeneral,isPrimaria,isSecundaria1,isSecundaria2,isEducSuperior,usarFiltros;
+	public static boolean graficaBarras,usarFiltros,isChinese,isThai,isAmerican,isKebab,isCurry,isTurkish,isPizza,isBreakfast;
 	public static JTextPane textPane = new JTextPane();
 	private JTextField textField;
 
@@ -125,18 +125,22 @@ public class NewInterface {
 		frmMongo.getContentPane().add(btnGenerarGrfica);
 		btnGenerarGrfica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(graphicSelected.equals("Tipo de comida")) {
-					try {
-						RestaurantGraph.generateRestaurantTypeFoodGraph("Gráfica", "Tipos de comida por restaurantes", "Tipos de comida", "Nº de restaurantes",graficaBarras);
-					} catch (UnknownHostException e) {
-						e.printStackTrace();
-					}	
-				}else if(graphicSelected.equals("Rating")) {
-					try {
-						RestaurantGraph.generateRestaurantRatioGraph("Gráfica", "Rating de restaurantes", "Rating", "Nº de restaurantes",minRating,maxRating, graficaBarras);
-					} catch (UnknownHostException e) {
-						e.printStackTrace();
+				if(maxRating>=minRating) {
+					if(graphicSelected.equals("Tipo de comida")) {
+						try {
+							RestaurantGraph.generateRestaurantTypeFoodGraph("Gráfica", "Tipos de comida por restaurantes", "Tipos de comida", "Nº de restaurantes",graficaBarras);
+						} catch (UnknownHostException e) {
+							e.printStackTrace();
+						}	
+					}else if(graphicSelected.equals("Rating")) {
+						try {
+							RestaurantGraph.generateRestaurantRatioGraph("Gráfica", "Rating de restaurantes", "Rating", "Nº de restaurantes",minRating,maxRating, graficaBarras);
+						} catch (UnknownHostException e) {
+							e.printStackTrace();
+						}
 					}
+				}else {
+					 textPane.setText("Rating maximo("+maxRating.toString()+") debe ser mayor o igual a Rating mínimo("+minRating.toString()+")");
 				}
 			}
 		});
@@ -190,70 +194,88 @@ public class NewInterface {
 		final JCheckBox chckbxThai = new JCheckBox("Thai");
 		chckbxThai.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				isGeneral = chckbxThai.isSelected();
+				isThai = chckbxThai.isSelected();
 			}
 		});
-		isGeneral = chckbxThai.isSelected();
+		isThai = chckbxThai.isSelected();
 		panel_tipo_de_comida.add(chckbxThai);
 		
 		final JCheckBox chckbxChinese = new JCheckBox("Chinese");
 		chckbxChinese.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				isPrimaria = chckbxChinese.isSelected();
+				isChinese = chckbxChinese.isSelected();
 			}
 		});
+		isChinese = chckbxChinese.isSelected();
+		panel_tipo_de_comida.add(chckbxChinese);
 		
 		final JCheckBox chckbxBreakfast = new JCheckBox("Breakfast");
 		chckbxBreakfast.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				isSecundaria1 = chckbxBreakfast.isSelected();
+				isBreakfast = chckbxBreakfast.isSelected();
 			}
 		});
+		isBreakfast = chckbxBreakfast.isSelected();
 		panel_tipo_de_comida.add(chckbxBreakfast);
-		isSecundaria1 = chckbxBreakfast.isSelected();
-		panel_tipo_de_comida.add(chckbxChinese);
-		isPrimaria = chckbxChinese.isSelected();
 		
 		final JCheckBox chckbxAmerican = new JCheckBox("American");
 		chckbxAmerican.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				isSecundaria2 = chckbxAmerican.isSelected();
+				isAmerican = chckbxAmerican.isSelected();
 			}
 		});
-		isSecundaria2 = chckbxAmerican.isSelected();
+		isAmerican = chckbxAmerican.isSelected();
 		panel_tipo_de_comida.add(chckbxAmerican);
 		
 		final JCheckBox chckbxPizza = new JCheckBox("Pizza");
 		chckbxPizza.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				isEducSuperior = chckbxPizza.isSelected();
+				isPizza = chckbxPizza.isSelected();
 			}
 		});
-		isEducSuperior = chckbxPizza.isSelected();
+		isPizza = chckbxPizza.isSelected();
 		panel_tipo_de_comida.add(chckbxPizza);
 		
-		JCheckBox chckbxKebab = new JCheckBox("Kebab");
+		final JCheckBox chckbxKebab = new JCheckBox("Kebab");
+		chckbxKebab.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				isKebab = chckbxKebab.isSelected();
+			}
+		});
+		isKebab = chckbxKebab.isSelected();
 		panel_tipo_de_comida.add(chckbxKebab);
 		
-		JCheckBox chckbxTurkish = new JCheckBox("Turkish");
+		final JCheckBox chckbxTurkish = new JCheckBox("Turkish");
+		chckbxTurkish.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				isTurkish = chckbxTurkish.isSelected();
+			}
+		});
+		isTurkish = chckbxTurkish.isSelected();
 		panel_tipo_de_comida.add(chckbxTurkish);
 		
-		JCheckBox chckbxCurry = new JCheckBox("Curry");
+		final JCheckBox chckbxCurry = new JCheckBox("Curry");
+		chckbxCurry.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				isCurry = chckbxCurry.isSelected();
+			}
+		});
+		isCurry = chckbxCurry.isSelected();
 		panel_tipo_de_comida.add(chckbxCurry);
 		
 		JLabel lblTipo = new JLabel("Precio");
 		lblTipo.setBounds(21, 271, 50, 14);
 		frmMongo.getContentPane().add(lblTipo);
 		
-		final JComboBox comboBox_3 = new JComboBox();
-		comboBox_3.setBounds(101, 268, 89, 20);
-		frmMongo.getContentPane().add(comboBox_3);
-		comboBox_3.addActionListener(new ActionListener() {
+		final JComboBox comboBox_price = new JComboBox();
+		comboBox_price.setBounds(101, 268, 89, 20);
+		frmMongo.getContentPane().add(comboBox_price);
+		comboBox_price.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tipo_tipo = comboBox_3.getSelectedItem().toString();
+				price = comboBox_price.getSelectedItem().toString();
 			}
 		});
-		comboBox_3.setModel(new DefaultComboBoxModel(new String[] {"Ninguno", "Bajo", "medio", "Alto"}));
+		comboBox_price.setModel(new DefaultComboBoxModel(new String[] {"Ninguno", "Bajo", "medio", "Alto"}));
 		
 		JLabel lblTipoDeComida = new JLabel("Tipos de comida");
 		lblTipoDeComida.setBounds(208, 215, 126, 14);
@@ -282,6 +304,6 @@ public class NewInterface {
 		textPane.setBounds(10, 377, 577, 51);
 		textPane.setDisabledTextColor(new Color(0).RED);
 		frmMongo.getContentPane().add(textPane);
-		tipo_tipo = comboBox_3.getSelectedItem().toString();
+		price = comboBox_price.getSelectedItem().toString();
 	}
 }
