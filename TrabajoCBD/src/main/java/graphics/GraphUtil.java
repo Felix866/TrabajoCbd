@@ -1,10 +1,12 @@
 package graphics;
 
-import java.net.UnknownHostException;
-import java.util.Collection;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextPane;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -12,11 +14,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import com.google.common.collect.Lists;
-
-import enumerados.LaboralType;
-import forms.LaboralForm;
-import util.Queries_laboral;
+import forms.RestaurantForm;
 
 public class GraphUtil extends javax.swing.JFrame{
 
@@ -45,9 +43,10 @@ public class GraphUtil extends javax.swing.JFrame{
 		ChartPanel panel = new ChartPanel(graph);
 		JFrame window = new JFrame(windowName);
 		window.getContentPane().add(panel);
-		window.pack();
+		window.setBounds(50, 50, 1000, 610);
+//		window.pack();
 		window.setVisible(true);
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 	
 	/**
@@ -66,10 +65,46 @@ public class GraphUtil extends javax.swing.JFrame{
 		ChartPanel panel = new ChartPanel(graph);
 		JFrame window = new JFrame(windowName);
 		window.getContentPane().add(panel);
-		window.pack();
+		window.setBounds(50, 50, 1000, 610);
+//		window.pack();
 		window.setVisible(true);
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
+	
+	public void createShowResult(List<RestaurantForm> forms){
+		JFrame window = new JFrame();
+		window.getContentPane().setForeground(Color.LIGHT_GRAY);
+		window.setTitle("Mostrar Resultados");
+		window.setBounds(50, 50, 1200, 610);
+		window.getContentPane().setLayout(null);
+		JTextPane textPane = new JTextPane();
+		textPane.setForeground(Color.BLACK);
+		textPane.setBackground(Color.WHITE);
+		textPane.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		textPane.setEnabled(false);
+		textPane.setEditable(true);
+		textPane.setBounds(10, 20, 1200, 600);
+		textPane.setDisabledTextColor(Color.BLACK);
+		
+		JLabel label = new JLabel("Número de documentos encontrados:"+forms.size());
+		label.setBounds(10, 2, 400, 18);
+		window.getContentPane().add(label);
+		
+		String text ="";
+		Integer count = 1;
+
+		for (RestaurantForm form: forms) {
+			text += "Restaurant"+String.valueOf(count)+" -> "+form.toString()+"\n ";
+			count++;
+		}
+		textPane.setText(text);
+		window.getContentPane().add(textPane);
+//		window.pack();
+		window.setVisible(true);
+		window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+	
+	}
+	
 	
 	
 }

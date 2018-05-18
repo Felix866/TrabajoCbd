@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
@@ -42,6 +43,7 @@ public class ToolKit {
 		
 		return res;	
 	}
+	
 	
 	/*
 	 * Formatea una cadena devuelta por la BD. Elimina los caracteres
@@ -224,6 +226,42 @@ public class ToolKit {
 		if(isSecundaria1) res.add(getRateType("Secundaria-1 FP"));		
 		if(isSecundaria2) res.add(getRateType("Secundaria-2 FP"));
 		if(isEducSuperior) res.add(getRateType("Educ. Superior"));
+		return res;
+	}
+
+	public static List<String> getListTypeFood(boolean isChinese, boolean isThai, boolean isKebab, boolean isCurry,
+			boolean isTurkish, boolean isPizza, boolean isBreakfast, boolean isAfrican, boolean isDesserts, boolean isChicken, boolean isAmerican) {
+		List<String> res = new ArrayList<String>();
+		if(isChinese)
+			res.add("Chinese");
+		if(isThai)
+			res.add("Thai");
+		if(isKebab)
+			res.add("Kebab");
+		if(isCurry)
+			res.add("Curry");
+		if(isTurkish)
+			res.add("Turkish");
+		if(isPizza)
+			res.add("Pizza");
+		if(isBreakfast)
+			res.add("Breakfast");
+		if(isAfrican)
+			res.add("African");
+		if(isDesserts)
+			res.add("Desserts");
+		if(isChicken)
+			res.add("Chicken");
+		if(isAmerican)
+			res.add("American");
+		
+		
+		return res;
+	}
+	
+	public static List<String> getAllTypeFood(){
+		List<String> res = new ArrayList<String>();
+		res.add("Chinese");res.add("Thai");res.add("Kebab");res.add("Curry");res.add("Turkish");res.add("Pizza");res.add("African");res.add("Desserts");res.add("American");res.add("Chicken");res.add("Breakfast");
 		return res;
 	}
 

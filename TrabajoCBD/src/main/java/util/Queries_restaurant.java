@@ -1,6 +1,8 @@
 package util;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -12,14 +14,20 @@ public class Queries_restaurant {
 	//Devuelve todos los elementos de la BD
 	public DBCursor findAll() throws UnknownHostException{
 		DBCollection collection = DatabaseService.getCollection("Restaurantes");
-		DBObject query = new BasicDBObject();
-		DBCursor result = collection.find(query);
+		DBCursor result = collection.find();
 		return result;
 	}
 	//Devuelve todos los elementos por rating
 	public DBCursor findByRating(Double rating) throws UnknownHostException {
 		DBCollection collection = DatabaseService.getCollection("Restaurantes");
 		DBObject query = new BasicDBObject("rating", rating);
+		DBCursor res = collection.find(query);
+		return res;
+	}
+	//Devuelve todos los elementos por name
+	public DBCursor findByName(String name) throws UnknownHostException {
+		DBCollection collection = DatabaseService.getCollection("Restaurantes");
+		DBObject query = new BasicDBObject("name",java.util.regex.Pattern.compile(name));
 		DBCursor res = collection.find(query);
 		return res;
 	}
@@ -38,7 +46,7 @@ public class Queries_restaurant {
 		return result;
 	}
 	
-	//Encuentra un objeto dado un Codigo Postal
+	//Encuentra los objeto dado un Codigo Postal
 	public DBCursor findByLocationCP(String number) throws UnknownHostException{
 		DBCollection collection = DatabaseService.getCollection("Restaurantes");
 		DBObject query = new BasicDBObject("postcode",java.util.regex.Pattern.compile(number));
@@ -46,55 +54,71 @@ public class Queries_restaurant {
 		return result;
 	}
 	
-	//Encuentra un objeto dada una ciudad
+	//Encuentra los objeto dada una ciudad
 	public DBCursor findByCity(String ciudad) throws UnknownHostException{
 		DBCollection collection = DatabaseService.getCollection("Restaurantes");
 		DBObject query = new BasicDBObject("address line 2",java.util.regex.Pattern.compile(ciudad));
-//		DBObject projection = new BasicDBObject("_id", 0);
-//		projection.put("address", 0);
-//		projection.put("URL", 0);
-//		projection.put("address line 2", 0);
-//		projection.put("outcode", 0);
-//		projection.put("postcode", 0);
-//		projection.put("rating", 0);
-//		projection.put("type_of_food", 0);
-//		DBCursor result = collection.find(query, projection);
 		DBCursor result = collection.find(query);
 		return result;
 	}
 	
+	//Encuentra los objetos dado un rango de rating
+	public DBCursor findByRatingRange(Double minRating,Double maxRating) throws UnknownHostException {
+		DBCollection collection = DatabaseService.getCollection("Restaurantes");
+		BasicDBObject query = new BasicDBObject();
+		query.put("rating", new BasicDBObject("$gte", minRating).append("$lte", maxRating));
+		DBCursor res = collection.find(query);
+		return res;
+	}	
+	
+	//Encuentra los objetos que coincidan con los tipos de comidas dados
+	public DBCursor findByTypeFood(List<String> typeFoods) throws UnknownHostException{
+		DBCollection collection = DatabaseService.getCollection("Restaurantes");
+		BasicDBObject query = new BasicDBObject();
+		query.put("type_of_food", new BasicDBObject("$in", typeFoods));
+		DBCursor result = collection.find(query);
+		return result;
+	}
+	
+	//Encuentra los objetos que coincidan con los datos aportados
+	public DBCursor findByFilters(Double minRating,Double maxRating,List<String> typeFoods,String ciudad,String postcode,String precio,String nombre) throws UnknownHostException{
+		DBCollection collection = DatabaseService.getCollection("Restaurantes");
+		BasicDBObject query = new BasicDBObject();
+		if(!typeFoods.isEmpty()) {
+			query.put("type_of_food", new BasicDBObject("$in", typeFoods));
+		}
+		query.put("rating", new BasicDBObject("$gte", minRating).append("$lte", maxRating));
+		query.put("address line 2", new BasicDBObject("$regex",ciudad));
+		query.put("postcode", new BasicDBObject("$regex",postcode));
+		query.put("price", new BasicDBObject("$regex",precio));
+		query.put("name", new BasicDBObject("$regex",nombre));
+		DBCursor result = collection.find(query);
+		return result;
+	}
+		
 	public static void main(String[] args) throws UnknownHostException {
 		Queries_restaurant qr = new Queries_restaurant();
 		//Collection<DBObject> res = qr.getAllRating();
 //		DBCursor aux = qr.findByLocationCP("8NX");
-//		while(aux.hasNext()) {
-//			System.out.println(aux.next());
-//		}
-//		DBCursor res = qr.findAll();
-//		System.out.println(res.count());
-//		DBCursor aux2 = qr.findByRating(6.0);
-//		System.out.println(aux2.count());
-//		DBCursor res = qr.findByTypeFood("Thai");
-//		System.out.println(res.count());
-//		DBCursor aux = qr.findByCity("London");
-//		DBCursor res = qr.findAll();
-//		DBCursor aux = qr.findAll();
-//		DBObject a;
-//		while(res.hasNext()) {
-//			a =  res.next();
-//			if(a.get("address line 2").equals("London")) {
-//				System.out.println(a);
-//				System.out.println(a.keySet());
-//			}
-//			//System.out.println(res.next());
-//		}
-//		List<RestaurantForm> lista = ToolKit.cursorToColletion(aux);
-//		for (int i = 0; i < lista.size()-1; i++) {
-//			System.out.println(lista.get(i).getAddress());
-//		}
-		DBCursor res = qr.findByCity("");
+		
+		List<String> types = new ArrayList<String>();
+//		types.add("African");
+//		types.add("Curry");
+//		List<String> types2 = new ArrayList<String>();
+//		types2.add("Chinese");
+//		types2.add("Hola");
+//		types.retainAll(types2);
+
+		
+		//DBCursor res = qr.findByTypeFood(types);
+		//DBCursor res = qr.findByCity(" ");
+		//DBCursor res = qr.findByRatingRange(2.5, 5.5);
+		//DBCursor res = qr.findAll();
+		//DBCursor res = qr.findByPrecio("low");
+		DBCursor res = qr.findByFilters(1.0, 6.0,types,"","8","","");
+		System.out.println(res.count());
 		while(res.hasNext()) {
-			System.out.println(res.count());
+			System.out.println(res.next().get("postcode"));
 		}
 	}
 }
