@@ -114,33 +114,4 @@ public class Queries_restaurant {
 		}
 		return result;
 	}
-		
-//	public static void main(String[] args) throws UnknownHostException {
-//		Queries_restaurant qr = new Queries_restaurant();
-		//Collection<DBObject> res = qr.getAllRating();
-//		DBCursor aux = qr.findByLocationCP("8NX");
-		
-//		List<String> types = new ArrayList<String>();
-//		types.add("African");
-//		types.add("Curry");
-//		List<String> types2 = new ArrayList<String>();
-//		types2.add("Chinese");
-//		types2.add("Hola");
-//		types.retainAll(types2);
-
-		
-		//DBCursor res = qr.findByTypeFood(types);
-		//DBCursor res = qr.findByCity(" ");
-		//DBCursor res = qr.findByRatingRange(2.5, 5.5);
-		//DBCursor res = qr.findAll();
-		//DBCursor res = qr.findByPrecio("low");
-		//DBCursor res = qr.findByFilters(1.0, 6.0,types,"","8","","");
-		
-//		DBCursor res = qr.findAll();
-//		System.out.println(res.count());
-//		res.sort(new BasicDBObject("rating",1));
-//		while(res.hasNext()) {
-//			System.out.println(res.next());
-//		}
-//	}
 }

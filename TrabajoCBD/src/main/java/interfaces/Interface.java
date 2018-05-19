@@ -494,7 +494,7 @@ public class Interface {
 		frmMongo.getContentPane().add(lblTipoDeComida);
 		
 		final JComboBox comboBox_3 = new JComboBox();
-		comboBox_3.setModel(new DefaultComboBoxModel(new String[] {"No aplica", "Ciudad", "Codigo Postal", "Rating", "Precio", "Nombre"}));
+		comboBox_3.setModel(new DefaultComboBoxModel(new String[] {"No aplica", "Ciudad", "Codigo Postal", "Rating", "Precio", "Nombre", "Tipo de comida"}));
 		comboBox_3.setBounds(498, 396, 100, 20);
 		comboBox_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
