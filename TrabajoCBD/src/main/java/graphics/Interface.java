@@ -22,7 +22,6 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 
 import com.mongodb.DBCursor;
 
@@ -30,9 +29,8 @@ import util.MongoConnection;
 import util.Populate;
 import util.Queries_restaurant;
 import util.ToolKit;
-import javax.swing.JSlider;
 
-public class NewInterface {
+public class Interface {
 
 	private JFrame frmMongo;
 	
@@ -53,7 +51,7 @@ public class NewInterface {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					NewInterface window = new NewInterface();
+					Interface window = new Interface();
 					window.frmMongo.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -65,7 +63,7 @@ public class NewInterface {
 	/**
 	 * Create the application.
 	 */
-	public NewInterface() {
+	public Interface() {
 		initialize();
 	}
 

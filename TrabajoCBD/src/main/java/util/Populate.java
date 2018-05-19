@@ -14,7 +14,7 @@ public class Populate {
 		
 		//Populate consumption collection
 		String importCommand ="mongoimport.exe --db CBD --collection Restaurantes "
-				+ "C:\\data\\restaurantes.txt"; //--jsonArray
+				+ "C:\\data\\restaurantes.json"; //--jsonArray
 		String commandPath ="cd C:\\Program Files\\MongoDB\\Server\\3.6\\bin";
 		ProcessBuilder builder = new ProcessBuilder(
 		      "cmd.exe", "/c", commandPath +"&&" + importCommand);

@@ -10,7 +10,7 @@ public class ServicesTest {
 	@Test
 	public void dropConsumptionTest() throws UnknownHostException{
 		DatabaseService util = new DatabaseService();
-		util.dropCollection("consumption");
+		util.dropCollection("Restaurantes");
 	}
 	
 }

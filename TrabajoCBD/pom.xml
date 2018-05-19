@@ -2,13 +2,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>asdf</groupId>
-  <artifactId>asdf</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>asdf</name>
-  <url>http://maven.apache.org</url>
+  <name>Proyecto CBD</name>
+  <url>https://github.com/Felix866/TrabajoCbd</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -98,4 +96,13 @@
 
  </plugins>
   </build>
+  <description>Proyecto destinado para la asignatura Complemento a Base de Datos. Su objetivo es crear una base de datos NoSQL con MongoDB haciendo uso de los cursores para consultar dichos datos desde una interfaz de usuario. El resultado final será la obtención de dichos datos representados en graficas mediante en la interfaz gráfica. Lenguaje usado Java.
+
+Trabajo para la Universidad de Sevilla,realizado por:
+
+Rodríguez Fernández, Diego 
+Gonzalez Zuluaga, Samuel
+Gómez Rodríguez, José Félix</description>
+  <groupId>cursoresMongodb</groupId>
+  <artifactId>cursoresMongodb</artifactId>
 </project>
