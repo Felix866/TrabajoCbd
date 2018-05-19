@@ -15,6 +15,7 @@ public class Queries_restaurant {
 	public DBCursor findAll() throws UnknownHostException{
 		DBCollection collection = DatabaseService.getCollection("Restaurantes");
 		DBCursor result = collection.find();
+		result.limit(0);
 		return result;
 	}
 	//Devuelve todos los elementos por rating
@@ -115,7 +116,9 @@ public class Queries_restaurant {
 		//DBCursor res = qr.findByRatingRange(2.5, 5.5);
 		//DBCursor res = qr.findAll();
 		//DBCursor res = qr.findByPrecio("low");
-		DBCursor res = qr.findByFilters(1.0, 6.0,types,"","8","","");
+		//DBCursor res = qr.findByFilters(1.0, 6.0,types,"","8","","");
+		
+		DBCursor res = qr.findAll();
 		System.out.println(res.count());
 		while(res.hasNext()) {
 			System.out.println(res.next().get("postcode"));

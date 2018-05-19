@@ -21,15 +21,22 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+
+import com.mongodb.DBCursor;
+
 import util.MongoConnection;
 import util.Populate;
+import util.Queries_restaurant;
 import util.ToolKit;
+import javax.swing.JSlider;
 
 public class NewInterface {
 
 	private JFrame frmMongo;
 	
-	public static String graphicSelected,price,name,city;
+	public static String graphicSelected,price,name,city,limit;
 	public static Double maxRating, minRating, anyoOpcional;
 	public static boolean graficaBarras,usarFiltros,isChinese,isThai,isAmerican,isKebab,isCurry,isTurkish,isPizza,isBreakfast,isAfrican,isDesserts,isChicken;
 	public static JTextPane textPane = new JTextPane();
@@ -38,6 +45,7 @@ public class NewInterface {
 	private JTextField textField_name;
 	private JTextField textField_limit;
 	private JTextField textField_postCode;
+	private DBCursor cursor;
 	/**
 	 * Launch the application.
 	 */
@@ -69,7 +77,7 @@ public class NewInterface {
 		frmMongo = new JFrame();
 		frmMongo.setTitle("Aplicación MongoBD (usando cursores)");
 		frmMongo.getContentPane().setForeground(Color.LIGHT_GRAY);
-		frmMongo.setBounds(100, 100, 613, 549);
+		frmMongo.setBounds(100, 100, 630, 630);
 		frmMongo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMongo.getContentPane().setLayout(null);
 
@@ -80,7 +88,7 @@ public class NewInterface {
 			}
 		});
 		comboBox.setToolTipText("Tipo de gráfico que desea");
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Rating", "Tipo de comida"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Rating", "Tipo de comida", "Precio"}));
 		graphicSelected = comboBox.getSelectedItem().toString();
 		
 		JButton btnPopulate = new JButton("Populate");
@@ -111,24 +119,26 @@ public class NewInterface {
 		btnPopulate.setBounds(498, 11, 89, 36);
 		frmMongo.getContentPane().add(btnPopulate);
 		
-		JLabel lblTipoDeGrafico = new JLabel("Tipo de gráfica");
-		lblTipoDeGrafico.setBounds(21, 75, 99, 14);
+		JLabel lblTipoDeGrafico = new JLabel("Gráficas");
+		lblTipoDeGrafico.setFont(new Font("Century Gothic", Font.BOLD, 20));
+		lblTipoDeGrafico.setBounds(21, 24, 99, 37);
 		frmMongo.getContentPane().add(lblTipoDeGrafico);
-		comboBox.setBounds(130, 72, 457, 20);
+		comboBox.setBounds(21, 63, 274, 29);
 		frmMongo.getContentPane().add(comboBox);
 		
 		final JCheckBox chckbxMostrarGrficaDe = new JCheckBox("Mostrar gráfica de barras");
+		chckbxMostrarGrficaDe.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		chckbxMostrarGrficaDe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				graficaBarras = chckbxMostrarGrficaDe.isSelected();
 			}
 		});
-		chckbxMostrarGrficaDe.setBounds(130, 96, 308, 23);
+		chckbxMostrarGrficaDe.setBounds(21, 99, 274, 23);
 		frmMongo.getContentPane().add(chckbxMostrarGrficaDe);
 		
 		JButton btnGenerarGrfica = new JButton("Generar gráfica");
-		btnGenerarGrfica.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnGenerarGrfica.setBounds(452, 103, 135, 45);
+		btnGenerarGrfica.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnGenerarGrfica.setBounds(334, 59, 253, 89);
 		frmMongo.getContentPane().add(btnGenerarGrfica);
 		btnGenerarGrfica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -150,21 +160,32 @@ public class NewInterface {
 							} catch (UnknownHostException e) {
 								e.printStackTrace();
 							}
+						}else if(graphicSelected.equals("Precio")) {
+							try {
+								RestaurantGraph.generateRestaurantPriceGraph("Gráfica", "Precio de restaurantes", "Tipos de Precio", "Nº de restaurantes",minRating,maxRating, textField_city.getText(), textField_name.getText(), price,textField_postCode.getText(), comidas, graficaBarras);
+							} catch (UnknownHostException e) {
+								e.printStackTrace();
+							}
 						}
 					}else {
 						 textPane.setText("Rating maximo("+maxRating.toString()+") debe ser mayor o igual a Rating mínimo("+minRating.toString()+")");
 					}
-				}
-				else {
+				} else {
 					if(graphicSelected.equals("Tipo de comida")) {
 						try {
-							RestaurantGraph.generateRestaurantTypeFoodGraph("Gráfica", "Tipos de comida por restaurantes", "Tipos de comida", "Nº de restaurantes",1.0, 6.0, "", "", "","", comidas, graficaBarras);
+							RestaurantGraph.generateRestaurantTypeFoodGraph("Gráfica", "Tipos de comida por restaurantes", "Tipos de comida", "Nº de restaurantes",1.0, 6.0, "", "", "","", new ArrayList<String>(), graficaBarras);
 						} catch (UnknownHostException e) {
 							e.printStackTrace();
 						}	
 					}else if(graphicSelected.equals("Rating")) {
 						try {
-							RestaurantGraph.generateRestaurantRatingGraph("Gráfica", "Rating de restaurantes", "Rating", "Nº de restaurantes",1.0, 6.0, "", "", "","", comidas, graficaBarras);
+							RestaurantGraph.generateRestaurantRatingGraph("Gráfica", "Rating de restaurantes", "Rating", "Nº de restaurantes",1.0, 6.0, "", "", "","", new ArrayList<String>(), graficaBarras);
+						} catch (UnknownHostException e) {
+							e.printStackTrace();
+						}
+					}else if(graphicSelected.equals("Precio")) {
+						try {
+							RestaurantGraph.generateRestaurantPriceGraph("Gráfica", "Precio de restaurantes", "Tipos de Precio", "Nº de restaurantes",1.0, 6.0, "", "", "","", new ArrayList<String>(), graficaBarras);
 						} catch (UnknownHostException e) {
 							e.printStackTrace();
 						}
@@ -173,8 +194,8 @@ public class NewInterface {
 			}
 		});
 		
-		JLabel lblAoInicio = new JLabel("Rating Min");
-		lblAoInicio.setBounds(21, 199, 70, 14);
+		JLabel lblAoInicio = new JLabel("Rating Mínimo:");
+		lblAoInicio.setBounds(21, 199, 99, 14);
 		frmMongo.getContentPane().add(lblAoInicio);
 		
 		final JComboBox comboBox_1 = new JComboBox();
@@ -183,13 +204,13 @@ public class NewInterface {
 				minRating = Double.valueOf(comboBox_1.getSelectedItem().toString());
 			}
 		});
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5", "5.5", "6"}));
+		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5", "5.5", "6"}));
 		minRating = Double.valueOf(comboBox_1.getSelectedItem().toString());
 		comboBox_1.setBounds(111, 196, 50, 20);
 		frmMongo.getContentPane().add(comboBox_1);
 		
-		JLabel lblAoFin = new JLabel("Rating Max");
-		lblAoFin.setBounds(21, 227, 70, 14);
+		JLabel lblAoFin = new JLabel("Rating Máximo:");
+		lblAoFin.setBounds(21, 227, 99, 14);
 		frmMongo.getContentPane().add(lblAoFin);
 		
 		final JComboBox comboBox_2 = new JComboBox();
@@ -203,20 +224,21 @@ public class NewInterface {
 		comboBox_2.setBounds(111, 224, 50, 20);
 		frmMongo.getContentPane().add(comboBox_2);
 		
-		final JCheckBox chckBox = new JCheckBox("Seleccione para activar los filtros en las gráficas");
+		final JCheckBox chckBox = new JCheckBox("Activar filtros a gráfica");
+		chckBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		chckBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				usarFiltros = chckBox.isSelected();
 			}
 		});
-		chckBox.setBounds(130, 122, 308, 23);
+		chckBox.setBounds(21, 125, 308, 23);
 		frmMongo.getContentPane().add(chckBox);
 		
 		JPanel panel_tipo_de_comida = new JPanel();
 		FlowLayout fl_panel_tipo_de_comida = (FlowLayout) panel_tipo_de_comida.getLayout();
 		fl_panel_tipo_de_comida.setAlignment(FlowLayout.LEFT);
 		panel_tipo_de_comida.setBackground(Color.LIGHT_GRAY);
-		panel_tipo_de_comida.setBounds(208, 222, 379, 94);
+		panel_tipo_de_comida.setBounds(21, 267, 566, 70);
 		frmMongo.getContentPane().add(panel_tipo_de_comida);
 		
 		final JCheckBox chckbxThai = new JCheckBox("Thai");
@@ -318,12 +340,12 @@ public class NewInterface {
 		isChicken = chckbxChicken.isSelected();
 		panel_tipo_de_comida.add(chckbxChicken);
 		
-		JLabel lblTipo = new JLabel("Precio");
-		lblTipo.setBounds(21, 255, 50, 14);
+		JLabel lblTipo = new JLabel("Precio:");
+		lblTipo.setBounds(210, 199, 50, 14);
 		frmMongo.getContentPane().add(lblTipo);
 		
 		final JComboBox comboBox_price = new JComboBox();
-		comboBox_price.setBounds(111, 252, 79, 20);
+		comboBox_price.setBounds(270, 193, 79, 20);
 		frmMongo.getContentPane().add(comboBox_price);
 		comboBox_price.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -332,22 +354,18 @@ public class NewInterface {
 		});
 		comboBox_price.setModel(new DefaultComboBoxModel(new String[] {"No aplica", "low", "medium", "high"}));
 		
-		JLabel lblTipoDeComida = new JLabel("Tipos de comida");
-		lblTipoDeComida.setBounds(208, 199, 126, 14);
-		frmMongo.getContentPane().add(lblTipoDeComida);
-		
 		textField_city = new JTextField();
-		textField_city.setBounds(111, 283, 79, 20);
+		textField_city.setBounds(508, 221, 79, 20);
 		frmMongo.getContentPane().add(textField_city);
 		
-		JLabel lblCiudad = new JLabel("Ciudad");
-		lblCiudad.setBounds(21, 286, 63, 14);
+		JLabel lblCiudad = new JLabel("Ciudad:");
+		lblCiudad.setBounds(418, 224, 63, 14);
 		frmMongo.getContentPane().add(lblCiudad);
 		
 		
-		JLabel lblFiltros = new JLabel("FILTROS");
-		lblFiltros.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblFiltros.setBounds(249, 159, 86, 29);
+		JLabel lblFiltros = new JLabel("Filtros");
+		lblFiltros.setFont(new Font("Century Gothic", Font.BOLD, 20));
+		lblFiltros.setBounds(21, 159, 86, 29);
 		frmMongo.getContentPane().add(lblFiltros);
 		textPane.setBackground(Color.LIGHT_GRAY);
 		
@@ -356,17 +374,17 @@ public class NewInterface {
 		textPane.setFont(new Font("Tahoma", Font.BOLD, 11));
 		textPane.setEnabled(false);
 		textPane.setEditable(false);
-		textPane.setBounds(10, 429, 577, 70);
+		textPane.setBounds(21, 482, 577, 98);
 		textPane.setDisabledTextColor(new Color(0).RED);
 		frmMongo.getContentPane().add(textPane);
 		
 		textField_name = new JTextField();
 		textField_name.setColumns(10);
-		textField_name.setBounds(111, 312, 79, 20);
+		textField_name.setBounds(270, 224, 79, 20);
 		frmMongo.getContentPane().add(textField_name);
 		
-		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(21, 315, 63, 14);
+		JLabel lblNombre = new JLabel("Nombre:");
+		lblNombre.setBounds(210, 227, 63, 14);
 		frmMongo.getContentPane().add(lblNombre);
 		
 		JButton btnMostrarResultados = new JButton("Mostrar Resultados Filtrados");
@@ -375,36 +393,91 @@ public class NewInterface {
 				if(price.equals("No aplica"))
 					price="";
 				
-				if(maxRating>=minRating) {
-				comidas = ToolKit.getListTypeFood(isChinese,isThai,isKebab,isCurry,isTurkish,isPizza,isBreakfast,isAfrican,isDesserts,isChicken,isAmerican);
-				try {
-					RestaurantGraph.showResults(minRating,maxRating, textField_city.getText(), price, comidas,textField_name.getText(),textField_postCode.getText());
-				} catch (UnknownHostException e) {
-					e.printStackTrace();
+				if(textField_limit.getText().isEmpty()) {
+					limit = "0";
+				}else {
+					limit = textField_limit.getText();
 				}
-			}else {
-				textPane.setText("Rating maximo("+maxRating.toString()+") debe ser mayor o igual a Rating mínimo("+minRating.toString()+")");
-			}
+		
+				if(StringUtils.isNumeric(limit)) {
+					if(maxRating>=minRating) {
+					comidas = ToolKit.getListTypeFood(isChinese,isThai,isKebab,isCurry,isTurkish,isPizza,isBreakfast,isAfrican,isDesserts,isChicken,isAmerican);
+					try {
+						RestaurantGraph.showResults(minRating,maxRating, textField_city.getText(), price, comidas,textField_name.getText(),textField_postCode.getText(),Integer.valueOf(limit));
+					} catch (UnknownHostException e) {
+						e.printStackTrace();
+					}
+					}else {
+					textPane.setText("Rating maximo("+maxRating.toString()+") debe ser mayor o igual a Rating mínimo("+minRating.toString()+")");
+					}
+				}else {
+					textPane.setText("El límite de elementos buscados debe contener SOLO números.");
+				}
 		}});
 		btnMostrarResultados.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnMostrarResultados.setBounds(208, 360, 230, 45);
+		btnMostrarResultados.setBounds(180, 371, 253, 45);
 		frmMongo.getContentPane().add(btnMostrarResultados);
 		
 		textField_limit = new JTextField();
-		textField_limit.setBounds(415, 329, 37, 20);
+		textField_limit.setBounds(378, 346, 37, 20);
 		frmMongo.getContentPane().add(textField_limit);
 		
-		JLabel lblLimitarLaBusqueda = new JLabel("Limitar elementos de busqueda");
-		lblLimitarLaBusqueda.setBounds(218, 335, 210, 14);
+		JLabel lblLimitarLaBusqueda = new JLabel("Limitar elementos mostrados");
+		lblLimitarLaBusqueda.setBounds(208, 349, 172, 14);
 		frmMongo.getContentPane().add(lblLimitarLaBusqueda);
 		
 		textField_postCode = new JTextField();
-		textField_postCode.setBounds(111, 343, 79, 20);
+		textField_postCode.setBounds(508, 193, 79, 20);
 		frmMongo.getContentPane().add(textField_postCode);
 		
-		JLabel lblCodigoPostal = new JLabel("Codigo postal");
-		lblCodigoPostal.setBounds(21, 346, 86, 14);
+		JLabel lblCodigoPostal = new JLabel("Codigo postal:");
+		lblCodigoPostal.setBounds(418, 196, 86, 14);
 		frmMongo.getContentPane().add(lblCodigoPostal);
+		
+		final JButton btnSiguienteElemento = new JButton("Siguiente elemento");
+		btnSiguienteElemento.setEnabled(false);
+		btnSiguienteElemento.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnSiguienteElemento.setBounds(425, 427, 173, 45);
+		btnSiguienteElemento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				while(cursor.hasNext()) {
+					textPane.setText(cursor.next().toString());
+					break;
+				}
+			}
+		});
+		frmMongo.getContentPane().add(btnSiguienteElemento);
+		
+		JButton btnLoadCursor = new JButton("Cargar Cursor");
+		btnLoadCursor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(price.equals("No aplica"))
+					price="";
+				
+				comidas = ToolKit.getListTypeFood(isChinese,isThai,isKebab,isCurry,isTurkish,isPizza,isBreakfast,isAfrican,isDesserts,isChicken,isAmerican);
+				Queries_restaurant cr = new Queries_restaurant();
+				try {
+					cursor = cr.findByFilters(minRating, maxRating, comidas, textField_city.getText(), textField_postCode.getText(), price, textField_name.getText());
+					if(cursor.count()!=0) {
+						btnSiguienteElemento.setEnabled(true);
+						textPane.setText("Cursor cargado con los valores de los filtros. \nCargados "+cursor.count()+" elementos.");
+					}else {
+						btnSiguienteElemento.setEnabled(false);
+						textPane.setText("No se pudo realizar la carga del cursor ya que se encontraron 0 elementos coincidentes.");
+					}
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		btnLoadCursor.setEnabled(true);
+		btnLoadCursor.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnLoadCursor.setBounds(226, 427, 154, 45);
+		frmMongo.getContentPane().add(btnLoadCursor);
+		
+		JLabel lblTipoDeComida = new JLabel("Tipos de comida:");
+		lblTipoDeComida.setBounds(21, 252, 121, 14);
+		frmMongo.getContentPane().add(lblTipoDeComida);
 		
 		
 		price = comboBox_price.getSelectedItem().toString();

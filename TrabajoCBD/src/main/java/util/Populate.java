@@ -10,7 +10,7 @@ public class Populate {
 	
 		//Erase collection if any
 		DatabaseService dbs = new DatabaseService();
-		dbs.dropCollection("consumption");
+		dbs.dropCollection("restaurantes");
 		
 		//Populate consumption collection
 		String importCommand ="mongoimport.exe --db CBD --collection Restaurantes "
