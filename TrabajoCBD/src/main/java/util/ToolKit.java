@@ -67,13 +67,15 @@ public class ToolKit {
 	}
 	
 	public static String getOrderAttribute(String orden) {
-		String res = null;
+		String res = orden;
 		if(orden.equals("Ciudad"))
 			res = "address line 2";
 		if(orden.equals("Codigo Postal"))
 			res = "postcode";
 		if(orden.equals("Nombre"))
 			res = "postcode";
+		if(orden.equals("Precio"))
+			res = "price";
 		if(orden.equals("Rating"))
 			res = "rating";
 		if(orden.equals("Tipo de comida"))

@@ -96,13 +96,31 @@ public class Queries_restaurant {
 		DBCursor result = collection.find(query);
 		return result;
 	}
+	
+	public DBCursor findByFiltersOrder(Double minRating,Double maxRating,List<String> typeFoods,String ciudad,String postcode,String precio,String nombre,int tipoOrden, String orden) throws UnknownHostException{
+		DBCollection collection = DatabaseService.getCollection("Restaurantes");
+		BasicDBObject query = new BasicDBObject();
+		if(!typeFoods.isEmpty()) {
+			query.put("type_of_food", new BasicDBObject("$in", typeFoods));
+		}
+		query.put("rating", new BasicDBObject("$gte", minRating).append("$lte", maxRating));
+		query.put("address line 2", new BasicDBObject("$regex",ciudad));
+		query.put("postcode", new BasicDBObject("$regex",postcode));
+		query.put("price", new BasicDBObject("$regex",precio));
+		query.put("name", new BasicDBObject("$regex",nombre));
+		DBCursor result = collection.find(query);
+		if(!orden.equals("No aplica")) {
+			result.sort(new BasicDBObject(orden,tipoOrden));
+		}
+		return result;
+	}
 		
-	public static void main(String[] args) throws UnknownHostException {
-		Queries_restaurant qr = new Queries_restaurant();
+//	public static void main(String[] args) throws UnknownHostException {
+//		Queries_restaurant qr = new Queries_restaurant();
 		//Collection<DBObject> res = qr.getAllRating();
 //		DBCursor aux = qr.findByLocationCP("8NX");
 		
-		List<String> types = new ArrayList<String>();
+//		List<String> types = new ArrayList<String>();
 //		types.add("African");
 //		types.add("Curry");
 //		List<String> types2 = new ArrayList<String>();
@@ -118,11 +136,11 @@ public class Queries_restaurant {
 		//DBCursor res = qr.findByPrecio("low");
 		//DBCursor res = qr.findByFilters(1.0, 6.0,types,"","8","","");
 		
-		DBCursor res = qr.findAll();
-		System.out.println(res.count());
-		res.sort(new BasicDBObject("rating",1));
-		while(res.hasNext()) {
-			System.out.println(res.next());
-		}
-	}
+//		DBCursor res = qr.findAll();
+//		System.out.println(res.count());
+//		res.sort(new BasicDBObject("rating",1));
+//		while(res.hasNext()) {
+//			System.out.println(res.next());
+//		}
+//	}
 }

@@ -104,13 +104,13 @@ public class RestaurantGraph {
 	
 	
 	
-	public static void showResults(Double minRating, Double maxRating, String ciudad, String price, List<String> comidas, String nombre,String postcode,int limit) throws UnknownHostException {
+	public static void showResults(Double minRating, Double maxRating, String ciudad, String price, List<String> comidas, String nombre,String postcode,int limit,int tipoorden, String orden) throws UnknownHostException {
 		GraphUtil gu = new GraphUtil();
 		Queries_restaurant cr = new Queries_restaurant();
 		List<RestaurantForm> restaurantes = new ArrayList<RestaurantForm>();
 		DBCursor cursor;
 		
-		cursor = cr.findByFilters(minRating, maxRating, comidas, ciudad, postcode, price, nombre);
+		cursor = cr.findByFiltersOrder(minRating, maxRating, comidas, ciudad, postcode, price, nombre,tipoorden,orden);
 		cursor.limit(limit);
 		restaurantes = ToolKit.cursorToColletion(cursor);
 			

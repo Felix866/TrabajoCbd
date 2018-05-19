@@ -35,10 +35,11 @@ public class Interface {
 
 	private JFrame frmMongo;
 	
-	public static String graphicSelected,price,name,city,limit;
+	public static String graphicSelected,price,name,city,limit,orden,tipoorden;
 	public static Double maxRating, minRating, anyoOpcional;
 	public static boolean graficaBarras,usarFiltros,isChinese,isThai,isAmerican,isKebab,isCurry,isTurkish,isPizza,isBreakfast,isAfrican,isDesserts,isChicken;
 	public static JTextPane textPane = new JTextPane();
+	public static int intorden = 0;
 	private JTextField textField_city;
 	private List<String> comidas = new ArrayList<String>();
 	private JTextField textField_name;
@@ -397,12 +398,19 @@ public class Interface {
 				}else {
 					limit = textField_limit.getText();
 				}
-		
+				
+				if(tipoorden.equals("Ascendente")) 
+					intorden = 1;
+				
+				if(tipoorden.equals("Descendente"))
+					intorden = -1;
+				
+				orden = ToolKit.getOrderAttribute(orden);
 				if(StringUtils.isNumeric(limit)) {
 					if(maxRating>=minRating) {
 					comidas = ToolKit.getListTypeFood(isChinese,isThai,isKebab,isCurry,isTurkish,isPizza,isBreakfast,isAfrican,isDesserts,isChicken,isAmerican);
 					try {
-						RestaurantGraph.showResults(minRating,maxRating, textField_city.getText(), price, comidas,textField_name.getText(),textField_postCode.getText(),Integer.valueOf(limit));
+						RestaurantGraph.showResults(minRating,maxRating, textField_city.getText(), price, comidas,textField_name.getText(),textField_postCode.getText(),Integer.valueOf(limit), intorden,orden);
 					} catch (UnknownHostException e) {
 						e.printStackTrace();
 					}
@@ -453,10 +461,17 @@ public class Interface {
 				if(price.equals("No aplica"))
 					price="";
 				
+				if(tipoorden.equals("Ascendente")) 
+					intorden = 1;
+				
+				if(tipoorden.equals("Descendente"))
+					intorden = -1;
+				
+				orden = ToolKit.getOrderAttribute(orden);
 				comidas = ToolKit.getListTypeFood(isChinese,isThai,isKebab,isCurry,isTurkish,isPizza,isBreakfast,isAfrican,isDesserts,isChicken,isAmerican);
 				Queries_restaurant cr = new Queries_restaurant();
 				try {
-					cursor = cr.findByFilters(minRating, maxRating, comidas, textField_city.getText(), textField_postCode.getText(), price, textField_name.getText());
+					cursor = cr.findByFiltersOrder(minRating, maxRating, comidas, textField_city.getText(), textField_postCode.getText(), price, textField_name.getText(),intorden,orden);
 					if(cursor.count()!=0) {
 						btnSiguienteElemento.setEnabled(true);
 						textPane.setText("Cursor cargado con los valores de los filtros. \nCargados "+cursor.count()+" elementos.");
@@ -478,7 +493,34 @@ public class Interface {
 		lblTipoDeComida.setBounds(21, 252, 121, 14);
 		frmMongo.getContentPane().add(lblTipoDeComida);
 		
+		final JComboBox comboBox_3 = new JComboBox();
+		comboBox_3.setModel(new DefaultComboBoxModel(new String[] {"No aplica", "Ciudad", "Codigo Postal", "Rating", "Precio", "Nombre"}));
+		comboBox_3.setBounds(498, 396, 100, 20);
+		comboBox_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				orden = comboBox_3.getSelectedItem().toString();
+			}
+		});
+		frmMongo.getContentPane().add(comboBox_3);
 		
+		JLabel lblOrdenar = new JLabel("Ordenar:");
+		lblOrdenar.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblOrdenar.setBounds(443, 371, 61, 45);
+		
+		frmMongo.getContentPane().add(lblOrdenar);
+		
+		final JComboBox comboBox_4 = new JComboBox();
+		comboBox_4.setModel(new DefaultComboBoxModel(new String[] {"Ascendente", "Descendente"}));
+		comboBox_4.setBounds(498, 368, 100, 20);
+		comboBox_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tipoorden = comboBox_4.getSelectedItem().toString();
+			}
+		});
+		frmMongo.getContentPane().add(comboBox_4);
+		
+		orden = comboBox_3.getSelectedItem().toString();
+		tipoorden = comboBox_4.getSelectedItem().toString();
 		price = comboBox_price.getSelectedItem().toString();
 	}
 }
