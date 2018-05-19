@@ -66,6 +66,22 @@ public class ToolKit {
 		return res;
 	}
 	
+	public static String getOrderAttribute(String orden) {
+		String res = null;
+		if(orden.equals("Ciudad"))
+			res = "address line 2";
+		if(orden.equals("Codigo Postal"))
+			res = "postcode";
+		if(orden.equals("Nombre"))
+			res = "postcode";
+		if(orden.equals("Rating"))
+			res = "rating";
+		if(orden.equals("Tipo de comida"))
+			res = "type_of_food";
+		
+		return res;
+	}
+	
 	public static List<String> getAllTypeFood(){
 		List<String> res = new ArrayList<String>();
 		res.add("Chinese");res.add("Thai");res.add("Kebab");res.add("Curry");res.add("Turkish");res.add("Pizza");res.add("African");res.add("Desserts");res.add("American");res.add("Chicken");res.add("Breakfast");

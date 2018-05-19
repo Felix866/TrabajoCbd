@@ -1,4 +1,4 @@
-package graphics;
+package interfaces;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -25,6 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.mongodb.DBCursor;
 
+import graphics.RestaurantGraph;
 import util.MongoConnection;
 import util.Populate;
 import util.Queries_restaurant;

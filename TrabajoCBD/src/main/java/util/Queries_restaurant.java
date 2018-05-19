@@ -120,8 +120,9 @@ public class Queries_restaurant {
 		
 		DBCursor res = qr.findAll();
 		System.out.println(res.count());
+		res.sort(new BasicDBObject("rating",1));
 		while(res.hasNext()) {
-			System.out.println(res.next().get("postcode"));
+			System.out.println(res.next());
 		}
 	}
 }
