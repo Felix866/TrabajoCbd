@@ -1,7 +1,6 @@
 package util;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.mongodb.BasicDBObject;

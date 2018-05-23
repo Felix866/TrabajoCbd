@@ -82,6 +82,7 @@ public class Interface {
 		frmMongo.getContentPane().setLayout(null);
 
 		final JComboBox comboBox = new JComboBox();
+		comboBox.setFont(new Font("Tahoma", Font.BOLD, 14));
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				graphicSelected = comboBox.getSelectedItem().toString();
@@ -371,7 +372,7 @@ public class Interface {
 		
 		
 		textPane.setForeground(Color.BLACK);
-		textPane.setFont(new Font("Tahoma", Font.BOLD, 11));
+		textPane.setFont(new Font("Tahoma", Font.BOLD, 13));
 		textPane.setEnabled(false);
 		textPane.setEditable(false);
 		textPane.setBounds(21, 482, 577, 98);
@@ -422,15 +423,16 @@ public class Interface {
 				}
 		}});
 		btnMostrarResultados.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnMostrarResultados.setBounds(180, 371, 253, 45);
+		btnMostrarResultados.setBounds(180, 348, 253, 45);
 		frmMongo.getContentPane().add(btnMostrarResultados);
 		
 		textField_limit = new JTextField();
-		textField_limit.setBounds(378, 346, 37, 20);
+		textField_limit.setBounds(396, 397, 37, 20);
 		frmMongo.getContentPane().add(textField_limit);
 		
-		JLabel lblLimitarLaBusqueda = new JLabel("Limitar elementos mostrados");
-		lblLimitarLaBusqueda.setBounds(208, 349, 172, 14);
+		JLabel lblLimitarLaBusqueda = new JLabel("Limitar elementos mostrados:");
+		lblLimitarLaBusqueda.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblLimitarLaBusqueda.setBounds(180, 396, 218, 20);
 		frmMongo.getContentPane().add(lblLimitarLaBusqueda);
 		
 		textField_postCode = new JTextField();
@@ -495,7 +497,7 @@ public class Interface {
 		
 		final JComboBox comboBox_3 = new JComboBox();
 		comboBox_3.setModel(new DefaultComboBoxModel(new String[] {"No aplica", "Ciudad", "Codigo Postal", "Rating", "Precio", "Nombre", "Tipo de comida"}));
-		comboBox_3.setBounds(498, 396, 100, 20);
+		comboBox_3.setBounds(52, 451, 120, 20);
 		comboBox_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				orden = comboBox_3.getSelectedItem().toString();
@@ -504,14 +506,14 @@ public class Interface {
 		frmMongo.getContentPane().add(comboBox_3);
 		
 		JLabel lblOrdenar = new JLabel("Ordenar:");
-		lblOrdenar.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblOrdenar.setBounds(443, 371, 61, 45);
+		lblOrdenar.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblOrdenar.setBounds(52, 372, 92, 45);
 		
 		frmMongo.getContentPane().add(lblOrdenar);
 		
 		final JComboBox comboBox_4 = new JComboBox();
 		comboBox_4.setModel(new DefaultComboBoxModel(new String[] {"Ascendente", "Descendente"}));
-		comboBox_4.setBounds(498, 368, 100, 20);
+		comboBox_4.setBounds(52, 420, 120, 20);
 		comboBox_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tipoorden = comboBox_4.getSelectedItem().toString();

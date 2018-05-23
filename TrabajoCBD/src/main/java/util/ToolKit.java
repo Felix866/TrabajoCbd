@@ -1,5 +1,8 @@
 package util;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,5 +99,32 @@ public class ToolKit {
 		res.add("low");res.add("medium");res.add("high");
 		return res;
 	}
+	
+	public boolean writeFile(DBCursor cursor) {
+		Boolean res;
+		
+		FileWriter archivo;
+		
+		@SuppressWarnings("unused")
+		BufferedWriter bwEscritor;
+		try {
+			archivo = new FileWriter("C:\\data\\resultados.json");
+		//De momento se deja hasta aqui, listo para escribir, se escribe en el momento de dar la orden.
+//		for (int i=0; i<=mTextos.length-1;i++)
+		while(cursor.hasNext())
+		{
+			//Se va escribiendo cada linea en el archivo de texto.
+			archivo.write(cursor.next().toString() + "\r\n" );
+		}
+		//Este metodo escribe el archivo en el disco duro.
+		bwEscritor = new BufferedWriter(archivo);
+		res=true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			res= false;
+		}
+		return res;
+		
+		}
 
-}
+	}

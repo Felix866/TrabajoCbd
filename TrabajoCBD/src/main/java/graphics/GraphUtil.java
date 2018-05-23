@@ -43,7 +43,7 @@ public class GraphUtil extends javax.swing.JFrame{
 		ChartPanel panel = new ChartPanel(graph);
 		JFrame window = new JFrame(windowName);
 		window.getContentPane().add(panel);
-		window.setBounds(50, 50, 1000, 610);
+		window.setBounds(50, 50, 1000, 700);
 //		window.pack();
 		window.setVisible(true);
 		window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -65,7 +65,7 @@ public class GraphUtil extends javax.swing.JFrame{
 		ChartPanel panel = new ChartPanel(graph);
 		JFrame window = new JFrame(windowName);
 		window.getContentPane().add(panel);
-		window.setBounds(50, 50, 1000, 610);
+		window.setBounds(50, 50, 1000, 700);
 //		window.pack();
 		window.setVisible(true);
 		window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -75,15 +75,15 @@ public class GraphUtil extends javax.swing.JFrame{
 		JFrame window = new JFrame();
 		window.getContentPane().setForeground(Color.LIGHT_GRAY);
 		window.setTitle("Mostrar Resultados");
-		window.setBounds(50, 50, 1200, 610);
+		window.setBounds(50, 50, 1200, 700);
 		window.getContentPane().setLayout(null);
 		JTextPane textPane = new JTextPane();
 		textPane.setForeground(Color.BLACK);
 		textPane.setBackground(Color.WHITE);
-		textPane.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		textPane.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textPane.setEnabled(false);
 		textPane.setEditable(true);
-		textPane.setBounds(10, 20, 1200, 600);
+		textPane.setBounds(10, 20, 1200, 700);
 		textPane.setDisabledTextColor(Color.BLACK);
 		
 		JLabel label = new JLabel("Número de documentos encontrados:"+forms.size());
